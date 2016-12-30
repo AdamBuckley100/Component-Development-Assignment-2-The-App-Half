@@ -125,7 +125,7 @@ var ProductCatalogueApp = React.createClass({
               }
       }, 
 	  
-	        addproduct : function(n,a,p) {
+	  addproduct : function(n,a,p) {
         var that = this;
         request
            .post('http://localhost:4000/api/products')
