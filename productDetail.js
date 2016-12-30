@@ -7,8 +7,12 @@ import './App.css';
   var Specification = React.createClass({
 	  
       render: function(){
+		  
+		  		  console.log("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH:" + this.props.product.id);
 	  
           var product = this.props.product;
+		  
+		  		  console.log("JJJJJJJJJJJJJJJJJJJJJJJJJJ:" + product);
           			
           var display = (
 	
@@ -83,7 +87,6 @@ import './App.css';
       }
   });
   
-  
   	var Form = React.createClass({
 
        getInitialState: function() {
@@ -115,11 +118,11 @@ import './App.css';
 		   
              <form style={{marginTop: '30px'}}>
 			  
-                <h3>Ask A Question about the item for sale:</h3>
+                <h3>Leave a Comment about the item for sale:</h3>
 				
                 <div className="form-group">
 				
-				<input type="text" className="form-control" placeholder="Subject" value={this.state.subject} onChange={this.handleSubjectChange}>
+				<input type="text" className="form-control" placeholder="Subject Of The Comment" value={this.state.subject} onChange={this.handleSubjectChange}>
 				  
 				  </input>
                 
@@ -127,13 +130,13 @@ import './App.css';
 				
                 <div className="form-group">
 				
-                  <input type="text" className="form-control" placeholder="Query" value={this.state.query} onChange={this.handleQueryChange}>
+                  <input type="text" className="form-control" placeholder="The Comment Itself" value={this.state.query} onChange={this.handleQueryChange}>
 				  
 				  </input>
 				  
                 </div>
 				
-                <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit Question</button>
+                <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit Comment</button>
 				
               </form>
 			  
@@ -143,13 +146,13 @@ import './App.css';
 		  
        });	   
 	   
-    var Question = React.createClass({
+    var Comment = React.createClass({
 		
 			getInitialState : function() {
                return {
                 status : '',
-				subject: this.props.question.subject,
-                query: this.props.question.addess,
+				subject: this.props.comment.subject,
+                query: this.props.comment.addess,
                } ;
             },
 			
@@ -169,8 +172,8 @@ import './App.css';
 
 			   <li>
 			   <dl>
-			   <dt>Question Regarding {this.props.question.subject}</dt>
-			   {this.props.question.query}
+			   <dt>Comment Regarding {this.props.comment.subject}</dt>
+			   {this.props.comment.query}
 			   </dl>
 			   </li>
 			   <br></br>
@@ -182,19 +185,17 @@ import './App.css';
    
                 <span style={lineStyle}> {line} <span>
 				
-   <Link to={'/questions/' + this.props.question.id }>Answers</Link>
                   </span>
                 </span>
               </div>  
         );
         }
        }) ;
-
 		
-	var QuestionList = React.createClass({
+	var CommentList = React.createClass({
     render : function() {
-      var items = this.props.questions.map(function(question,index) {
-             return <Question key={index} question={question} 
+      var items = this.props.comments.map(function(comment,index) {
+             return <Comment key={index} comment={comment} 
                       addHandler={this.props.addHandler}  /> ;
          }.bind(this) )
       return (
@@ -203,8 +204,44 @@ import './App.css';
             </div>
         );
     }
-}) ;  
-	
+}) ;
+
+    var ImagesSection = React.createClass({
+		
+      render: function(){
+		  
+		  var product = this.props.product;
+		  
+		  console.log("DDDDDDDDDDDDDDDDDDDDDD:" + product);
+            var thumbImages = product.images.map(function(img,index) {
+				
+              return (
+                  <li>
+				  <br>
+				  </br>
+				  <br>
+				  </br>
+                   <img key={index} src={"/productSpecs/" + img} alt="missing" />
+				  <br>
+				  </br>	
+				  <br>
+				  </br>
+                  </li>
+                );
+                });
+				
+              return (
+			  
+                  <div>
+			  	 <p><b>Photos Of {this.props.product.name}:</b></p>
+				 <br></br>
+                   <ul className="product-thumbs">
+                       {thumbImages}
+                   </ul>
+                  </div>
+                  );
+          }
+    }) ;
 	
     var ProductDetail = React.createClass({
 		
@@ -226,10 +263,10 @@ import './App.css';
           }.bind(this)); 
       }, 
 	
-    addQuestion : function(s,q) {
+    addComment : function(s,q) {
         request
            .post('http://localhost:4000/api/products/' + 
-                      this.props.params.productId    + '/questions' )
+                      this.props.params.productId    + '/comments' )
            .send({ subject: s, query: q })
            .set('Content-Type', 'application/json')
            .end(function(err, res){
@@ -250,18 +287,19 @@ import './App.css';
 
 			var product = localStorage.getItem('product') ?
             JSON.parse(localStorage.getItem('product')) : 
-               { name: '', description: '', ReleaseYear: '', Version: '', RAM: '', Manufacturer: '', Weight: '', questions: [] } ;
+               { name: '', description: '', ReleaseYear: '', Version: '', RAM: '', Manufacturer: '', Weight: '', comments: [], images : [] } ;
 			   
-			   		 var questions = _.sortBy(product.questions, function(question) {
+		var comments = _.sortBy(product.comments, function(comment) {
 			 
-         return - question;
+         return - comment;
              }
           );
 			
 				display = 
 				(
                 <div>
-				   <Specification product={product} /> 
+				   <Specification product={product} />
+				   <ImagesSection product={product} />  
                 </div>	
                 );
 			 
@@ -269,8 +307,10 @@ import './App.css';
 			
                 <div>
 				{display}
-				<QuestionList questions={questions} />
-				<Form addHandler={this.addQuestion}  />
+
+				<CommentList comments={comments} />
+				<Form addHandler={this.addComment}  />
+
 			   
             </div>
             );

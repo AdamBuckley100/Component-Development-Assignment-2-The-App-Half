@@ -1,10 +1,8 @@
 import './App.css';
-
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router';
 import request from 'superagent' ; 
-
 
       var SelectBox = React.createClass({
 		  
@@ -44,7 +42,6 @@ import request from 'superagent' ;
               }
 			  
            });
-
 		   
      var Product= React.createClass({
 		 
@@ -72,7 +69,6 @@ import request from 'superagent' ;
              }
 			 
          }) ;
-
 		 
    var FilteredProductList = React.createClass({
 	   
@@ -99,7 +95,6 @@ import request from 'superagent' ;
               ) ;
         }
     });
-
 	
 var ProductCatalogueApp = React.createClass({
 	
@@ -203,8 +198,10 @@ var ProductCatalogueApp = React.createClass({
 				 
                    <div className="row">
 				   
-				   			   <h1> <strong> Products For Sale </strong> </h1>  
-							   
+				   			   <h1> <strong> Console City: </strong> </h1>
+							   <h4> <b> <u> Your One Stop Shop For Game Consoles </u> </b> </h4>
+								<p> <b> <u> Console Products Currently For Sale: </u> </b> </p> 
+
                       <SelectBox onUserInput={this.handleChange} filterText={this.state.search} sort={this.state.sort} />
 							 
                       <FilteredProductList products={filteredList} />
@@ -220,6 +217,5 @@ var ProductCatalogueApp = React.createClass({
           );
         }
 });
-
 
 export default ProductCatalogueApp;
