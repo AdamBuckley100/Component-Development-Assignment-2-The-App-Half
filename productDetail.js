@@ -137,6 +137,18 @@ import './App.css';
                 </div>
 				
                 <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit Comment</button>
+				<br>
+				</br>
+				<br>
+				</br>
+				<br>
+				</br>
+				<br>
+				</br>
+				<br>
+				</br>
+				<br>
+				</br>
 				
               </form>
 			  
